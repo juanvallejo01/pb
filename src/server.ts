@@ -31,6 +31,10 @@ const whatsapp = createWhatsAppClient(config);
 const app = express();
 app.disable("x-powered-by");
 
+app.get("/", (_req, res) => {
+  res.status(200).type("text/plain").send("Unimédicas WhatsApp bot OK");
+});
+
 app.get("/health", (_req, res) => {
   res.json({ status: "ok" });
 });
