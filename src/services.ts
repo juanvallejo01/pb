@@ -117,10 +117,17 @@ export const SERVICES: Service[] = [
     phone: "573247092649",
   },
   {
-    id: "recordatorio_citas",
+    id: "recordatorio_continente",
     emoji: "🔔",
-    title: "Recordatorio de citas",
-    description: "Sedes Continente y Centro (Naranjito)",
+    title: "Recordatorio Continente",
+    description: "Recordatorio de citas – Sede Continente",
+    phone: "573159143430",
+  },
+  {
+    id: "recordatorio_centro",
+    emoji: "🔔",
+    title: "Recordatorio Centro",
+    description: "Recordatorio de citas – Sede Centro (Naranjito)",
     phone: "573159143430",
   },
   // Para activar este servicio cuando haya número: quita las // del inicio
