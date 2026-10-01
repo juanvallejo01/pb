@@ -1,12 +1,13 @@
 // Punto de entrada: carga la configuración, monta las rutas y arranca el servidor.
 
+import path from "node:path";
 import { config as loadEnv } from "dotenv";
 import express, { type NextFunction, type Request, type Response } from "express";
 import { loadConfig, type Config } from "./config";
 import { logger } from "./logger";
 import { decideReply } from "./menu";
 import { createWebhookRouter } from "./webhook";
-import { createWhatsAppClient } from "./whatsapp";
+import { DeliveryTracker, createWhatsAppClient } from "./whatsapp";
 
 process.on("unhandledRejection", (reason) => {
   logger.error("Promesa rechazada sin manejar.", reason);
@@ -27,7 +28,8 @@ try {
   process.exit(1);
 }
 
-const whatsapp = createWhatsAppClient(config);
+const deliveries = new DeliveryTracker();
+const whatsapp = createWhatsAppClient(config, deliveries);
 const app = express();
 app.disable("x-powered-by");
 
@@ -39,10 +41,23 @@ app.get("/health", (_req, res) => {
   res.json({ status: "ok" });
 });
 
+// Archivos públicos (logo de la bienvenida en /logo.png). Solo se sirven imágenes.
+const PUBLIC_DIR = path.join(__dirname, "..", "public");
+const IMAGE_FILE = /^\/[\w-]+\.(png|jpe?g|webp)$/i;
+const serveImages = express.static(PUBLIC_DIR, { index: false, dotfiles: "ignore", maxAge: "1d", fallthrough: true });
+app.use((req, res, next) => {
+  if ((req.method === "GET" || req.method === "HEAD") && IMAGE_FILE.test(req.path)) {
+    serveImages(req, res, next);
+    return;
+  }
+  next();
+});
+
 app.use(
   createWebhookRouter({
     verifyToken: config.verifyToken,
     appSecret: config.appSecret,
+    onStatus: (messageId, status) => deliveries.notify(messageId, status),
     onMessage: async (message) => {
       const replies = decideReply(message, { welcomeImageUrl: config.welcomeImageUrl });
       await whatsapp.sendAll(message.from, replies);

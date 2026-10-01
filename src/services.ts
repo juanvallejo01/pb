@@ -14,7 +14,7 @@ export const WELCOME_TEXT = `🏥 *Bienvenido a Unimédicas IPS*
 
 🕐 *Horario de atención*
 Lunes a viernes: 7:00 a.m. – 6:00 p.m.
-Sábados: 8:00 a.m. – 1:00 p.m.
+Sábados: 8:00 a.m. – 12:00 m.
 
 📅 *Canales para solicitar citas*
 
@@ -24,8 +24,16 @@ L-V: 7:00 – 9:00 a.m. y 2:00 – 4:00 p.m.
 📧 *Correo:* citas.unimedicas.mag@gmail.com
 L-V: 7:00 a.m. – 6:00 p.m. (respuesta máx. 24 h)
 
-☎️ *Teléfono:* 602 297 8067 ext. 2001
+☎️ *Teléfono:*
+602 297 8067 ext. 2001 – Centro
+602 297 8067 ext. 2003 – Continente
 L-V: 9:00 – 11:00 a.m. y 4:00 – 5:00 p.m.
+
+💬 *WhatsApp:* 300 0000 000
+(Uso exclusivo Zona Rural Magisterio)
+
+🙋 *Hablar con un asesor*
+Asesor Líder SIAU: 301 0000 000
 
 🌐 Conoce más en https://unimedicasips.com/`;
 
@@ -112,7 +120,7 @@ export const SERVICES: Service[] = [
     id: "recordatorio_citas",
     emoji: "🔔",
     title: "Recordatorio de citas",
-    description: "Sede Continente",
+    description: "Sedes Continente y Centro (Naranjito)",
     phone: "573159143430",
   },
   // Para activar este servicio cuando haya número: quita las // del inicio

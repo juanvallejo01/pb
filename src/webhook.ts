@@ -10,6 +10,8 @@ export interface WebhookOptions {
   appSecret: string;
   /** Se llama una vez por cada mensaje nuevo (ya deduplicado). */
   onMessage: (message: IncomingMessage) => Promise<void>;
+  /** Se llama con cada estado de entrega (sent, delivered, read, failed) de los mensajes del bot. */
+  onStatus?: (messageId: string, status: string) => void;
 }
 
 /** Valida X-Hub-Signature-256 = "sha256=" + HMAC-SHA256(body crudo, app secret). */
@@ -88,6 +90,36 @@ export function extractMessages(payload: unknown): IncomingMessage[] {
   return result;
 }
 
+/** Extrae los estados de entrega de entry[].changes[].value.statuses[] (solo id y estado). */
+export interface DeliveryStatus {
+  id: string;
+  status: string;
+  errorCode?: number;
+  errorTitle?: string;
+}
+
+export function extractStatuses(payload: unknown): DeliveryStatus[] {
+  if (!isRecord(payload)) return [];
+  const result: DeliveryStatus[] = [];
+  for (const entry of asArray(payload.entry)) {
+    if (!isRecord(entry)) continue;
+    for (const change of asArray(entry.changes)) {
+      if (!isRecord(change) || !isRecord(change.value)) continue;
+      for (const raw of asArray(change.value.statuses)) {
+        if (!isRecord(raw) || typeof raw.id !== "string" || typeof raw.status !== "string") continue;
+        const item: DeliveryStatus = { id: raw.id, status: raw.status };
+        const error = asArray(raw.errors)[0];
+        if (isRecord(error)) {
+          if (typeof error.code === "number") item.errorCode = error.code;
+          if (typeof error.title === "string") item.errorTitle = error.title;
+        }
+        result.push(item);
+      }
+    }
+  }
+  return result;
+}
+
 export function createWebhookRouter(options: WebhookOptions): Router {
   const router = Router();
   const dedup = new MessageDeduplicator(1000);
@@ -137,6 +169,12 @@ export function createWebhookRouter(options: WebhookOptions): Router {
   async function processPayload(payload: unknown): Promise<void> {
     let messages: IncomingMessage[];
     try {
+      for (const { id, status, errorCode, errorTitle } of extractStatuses(payload)) {
+        if (status === "failed") {
+          logger.warn(`Meta informa que un mensaje del bot no se entregó: code=${errorCode ?? "?"} "${errorTitle ?? "?"}"`);
+        }
+        options.onStatus?.(id, status);
+      }
       messages = extractMessages(payload);
     } catch (err) {
       logger.error("Error leyendo el payload del webhook.", err);

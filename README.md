@@ -39,7 +39,7 @@ cp .env.example .env
 | `META_VERIFY_TOKEN` | Sí | Lo inventas tú: cualquier texto secreto, por ejemplo `unimedicas-2026-xyz`. Debes escribir exactamente el mismo en Meta al configurar el webhook (sección 6). |
 | `META_APP_SECRET` | Sí | **App settings → Basic** → "App secret" → botón **Show**. Sirve para comprobar que los mensajes vienen realmente de Meta. |
 | `META_API_VERSION` | No | Versión de la Graph API. Por defecto `v23.0`. |
-| `WELCOME_IMAGE_URL` | No | URL pública (https) del logo. Si la dejas vacía, la bienvenida se envía solo como texto. |
+| `WELCOME_IMAGE_URL` | No | URL pública (https) del logo. El propio bot sirve `public/logo.png` en `/logo.png`, así que puedes usar `https://TU-DOMINIO/logo.png` (la de ngrok o la de Railway). Si la dejas vacía, la bienvenida se envía solo como texto. |
 | `PORT` | No | Puerto del servidor. Por defecto `3000`. |
 
 > ⚠️ El archivo `.env` contiene secretos. **Nunca lo subas a GitHub** (ya está en `.gitignore`).
@@ -156,7 +156,10 @@ El token de **API Setup** vence en 24 horas. Para producción se usa un token de
 - La app está en modo de prueba y solo puede escribir a números autorizados. Agrega el número en **WhatsApp → API Setup → To → Manage phone number list** y confírmalo con el código que llega por WhatsApp. En producción (número propio verificado) esta restricción desaparece.
 
 **No llega la imagen de bienvenida**
-- `WELCOME_IMAGE_URL` debe ser una URL **pública** con https que entregue directamente la imagen (JPG o PNG, máx. 5 MB). Si Meta rechaza la imagen al enviarla, el bot manda la bienvenida como texto automáticamente.
+- `WELCOME_IMAGE_URL` debe ser una URL **pública** con https que entregue directamente la imagen (JPG o PNG, máx. 5 MB). Si Meta rechaza la imagen o avisa después que no pudo entregarla, el bot manda la bienvenida como texto automáticamente.
+
+**El menú llega antes que la bienvenida**
+- WhatsApp no garantiza el orden de llegada (una imagen tarda más que un texto). Por eso el bot espera a que Meta confirme que la bienvenida se entregó antes de enviar el menú, hasta 8 segundos. Si el celular de la persona está sin conexión, el menú sale al cumplirse ese tiempo.
 
 **No llega ningún mensaje al servidor**
 - Revisa que en **Webhook fields** esté suscrito el campo `messages`.
