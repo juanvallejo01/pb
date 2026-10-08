@@ -33,7 +33,7 @@ L-V: 9:00 – 11:00 a.m. y 4:00 – 5:00 p.m.
 (Uso exclusivo Zona Rural Magisterio)
 
 🙋 *Hablar con un asesor*
-Asesor Líder SIAU: 301 0000 000
+Asesor Líder SIAU: 320 220 9533
 
 🌐 Conoce más en https://unimedicasips.com/`;
 
@@ -129,6 +129,13 @@ export const SERVICES: Service[] = [
     title: "Recordatorio Centro",
     description: "Recordatorio de citas – Sede Centro (Naranjito)",
     phone: "573159143430",
+  },
+  {
+    id: "odontologia",
+    emoji: "🦷",
+    title: "Odontología",
+    description: "Citas y atención odontológica",
+    phone: "573106947566",
   },
   // Para activar este servicio cuando haya número: quita las // del inicio
   // de cada línea y reemplaza el teléfono por el número real.
