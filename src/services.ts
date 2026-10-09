@@ -133,8 +133,8 @@ export const SERVICES: Service[] = [
   {
     id: "odontologia",
     emoji: "🦷",
-    title: "Odontología",
-    description: "Citas y atención odontológica",
+    title: "Odontología e Higiene",
+    description: "Citas de odontología e higiene oral",
     phone: "573106947566",
   },
   // Para activar este servicio cuando haya número: quita las // del inicio
