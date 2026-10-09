@@ -65,7 +65,7 @@ export function welcomeMessages(options: MenuOptions = {}): OutgoingMessage[] {
 
 export function serviceMessages(service: Service): OutgoingMessage[] {
   const body =
-    `${service.emoji} *${service.title.toLocaleUpperCase("es-CO")}*\n\n` +
+    `${service.emoji ? `${service.emoji} ` : ""}*${service.title.toLocaleUpperCase("es-CO")}*\n\n` +
     `${service.description}\n\n` +
     `Para más información comunícate con:\n` +
     `📱 ${formatPhone(service.phone)}`;

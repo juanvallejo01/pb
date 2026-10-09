@@ -29,7 +29,7 @@ L-V: 7:00 a.m. – 6:00 p.m. (respuesta máx. 24 h)
 602 297 8067 ext. 2003 – Continente
 L-V: 9:00 – 11:00 a.m. y 4:00 – 5:00 p.m.
 
-💬 *WhatsApp:* 300 0000 000
+💬 *WhatsApp:* 317 855 4488
 (Uso exclusivo Zona Rural Magisterio)
 
 🙋 *Hablar con un asesor*
@@ -47,7 +47,7 @@ export const MENU_SECTION_TITLE = "Servicios";
 export interface Service {
   /** Identificador interno: minúsculas, sin espacios ni tildes. No se muestra al usuario. */
   id: string;
-  /** Emoji que acompaña al título en el detalle. */
+  /** Emoji que acompaña al título en el detalle. Puede quedar vacío (""). */
   emoji: string;
   /** Nombre del servicio en el menú (máx. 24 caracteres). */
   title: string;
@@ -122,6 +122,13 @@ export const SERVICES: Service[] = [
     title: "Odontología e Higiene",
     description: "Citas de odontología e higiene oral",
     phone: "573106947566",
+  },
+  {
+    id: "maternas",
+    emoji: "",
+    title: "Maternas",
+    description: "Control prenatal y atención a gestantes",
+    phone: "573202225126",
   },
   {
     id: "recordatorio_continente",

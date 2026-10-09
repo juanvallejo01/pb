@@ -57,7 +57,7 @@ describe("menu", () => {
         );
         assert.equal(detail.displayText, "💬 Abrir WhatsApp");
         assert.ok(detail.displayText.length <= 20);
-        assert.ok(detail.body.startsWith(`${service.emoji} *${service.title.toLocaleUpperCase("es-CO")}*\n\n`));
+        assert.ok(detail.body.startsWith(`${service.emoji ? `${service.emoji} ` : ""}*${service.title.toLocaleUpperCase("es-CO")}*\n\n`));
         assert.ok(detail.body.includes(service.description));
         assert.ok(detail.body.includes(`Para más información comunícate con:\n📱 ${formatPhone(service.phone)}`));
       }
