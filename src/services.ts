@@ -84,8 +84,8 @@ export const SERVICES: Service[] = [
   {
     id: "crecimiento_desarrollo",
     emoji: "👶",
-    title: "Crecimiento y desarrollo",
-    description: "Controles para niños y niñas",
+    title: "Crecimiento y vacunación",
+    description: "Crecimiento, desarrollo y vacunación de niños y niñas",
     phone: "573234681856",
   },
   {
