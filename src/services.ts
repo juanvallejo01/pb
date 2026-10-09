@@ -117,6 +117,13 @@ export const SERVICES: Service[] = [
     phone: "573247092649",
   },
   {
+    id: "odontologia",
+    emoji: "🦷",
+    title: "Odontología e Higiene",
+    description: "Citas de odontología e higiene oral",
+    phone: "573106947566",
+  },
+  {
     id: "recordatorio_continente",
     emoji: "🔔",
     title: "Recordatorio Continente",
@@ -129,13 +136,6 @@ export const SERVICES: Service[] = [
     title: "Recordatorio Centro",
     description: "Recordatorio de citas – Sede Centro (Naranjito)",
     phone: "573159143430",
-  },
-  {
-    id: "odontologia",
-    emoji: "🦷",
-    title: "Odontología e Higiene",
-    description: "Citas de odontología e higiene oral",
-    phone: "573106947566",
   },
   // Para activar este servicio cuando haya número: quita las // del inicio
   // de cada línea y reemplaza el teléfono por el número real.
