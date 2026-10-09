@@ -142,7 +142,7 @@ export const SERVICES: Service[] = [
     emoji: "🔔",
     title: "Recordatorio Centro",
     description: "Recordatorio de citas – Sede Centro (Naranjito)",
-    phone: "573159143430",
+    phone: "573178554488",
   },
   // Para activar este servicio cuando haya número: quita las // del inicio
   // de cada línea y reemplaza el teléfono por el número real.
