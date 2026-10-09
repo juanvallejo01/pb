@@ -129,6 +129,13 @@ describe("extractMessages y deduplicación", () => {
     assert.deepEqual(extractMessages({ entry: [{ changes: [{ value: { statuses: [{ id: "x" }] } }] }] }), []);
   });
 
+  it("acepta mensajes sin número usando from_user_id (usuarios con nombre de usuario)", () => {
+    const payload = {
+      entry: [{ changes: [{ value: { messages: [{ id: "wamid.1", from_user_id: "CO.1234567890", type: "text" }] } }] }],
+    };
+    assert.deepEqual(extractMessages(payload), [{ id: "wamid.1", from: "CO.1234567890", type: "text" }]);
+  });
+
   it("elimina los ids más antiguos al superar el límite", () => {
     const dedup = new MessageDeduplicator(3);
     for (const id of ["a", "b", "c", "d"]) assert.equal(dedup.isNew(id), true);

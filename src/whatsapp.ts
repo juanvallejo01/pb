@@ -82,7 +82,9 @@ export function createWhatsAppClient(
 
   /** Envía el mensaje y devuelve el id que asigna Meta, o null si falló. */
   async function send(to: string, kind: string, content: Record<string, unknown>): Promise<string | null> {
-    const payload = { messaging_product: "whatsapp", recipient_type: "individual", to, ...content };
+    // Un número va en "to"; un identificador de usuario (BSUID, ej. "CO.123…") va en "recipient".
+    const target = /^\d+$/.test(to) ? { to } : { recipient: to };
+    const payload = { messaging_product: "whatsapp", recipient_type: "individual", ...target, ...content };
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 

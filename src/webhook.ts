@@ -55,8 +55,11 @@ function asArray(value: unknown): unknown[] {
 /** Convierte un mensaje crudo de Meta en IncomingMessage, o null si no tiene la forma esperada. */
 export function parseMessage(raw: unknown): IncomingMessage | null {
   if (!isRecord(raw)) return null;
-  const { id, from, type } = raw;
-  if (typeof id !== "string" || typeof from !== "string" || typeof type !== "string") return null;
+  const { id, type } = raw;
+  // Si el usuario usa nombre de usuario de WhatsApp, Meta puede ocultar su número y enviar
+  // solo su identificador de usuario (BSUID) en from_user_id.
+  const from = typeof raw.from === "string" && raw.from ? raw.from : raw.from_user_id;
+  if (typeof id !== "string" || typeof from !== "string" || !from || typeof type !== "string") return null;
 
   const message: IncomingMessage = { id, from, type };
   if (type === "interactive" && isRecord(raw.interactive)) {
@@ -83,7 +86,10 @@ export function extractMessages(payload: unknown): IncomingMessage[] {
       for (const raw of asArray(change.value.messages)) {
         const message = parseMessage(raw);
         if (message) result.push(message);
-        else logger.warn("Mensaje con estructura inesperada; se ignora.");
+        else {
+          const fields = isRecord(raw) ? Object.keys(raw).join(", ") : typeof raw;
+          logger.warn(`Mensaje con estructura inesperada; se ignora. Campos: ${fields}`);
+        }
       }
     }
   }

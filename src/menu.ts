@@ -11,6 +11,7 @@ export const CTA_DISPLAY_TEXT = "💬 Abrir WhatsApp";
 /** Mensaje entrante ya normalizado desde el webhook. */
 export interface IncomingMessage {
   id: string;
+  /** Número del usuario, o su identificador de usuario (BSUID) si ocultó el número. */
   from: string;
   type: string;
   /** id elegido en una lista o botón, si aplica. */

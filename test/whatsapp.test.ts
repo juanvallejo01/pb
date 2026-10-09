@@ -79,6 +79,21 @@ describe("orden de entrega", () => {
     assert.deepEqual(log, ["image:wamid.1", "list:wamid.2"]);
   });
 
+  it("envía a un número con \"to\" y a un identificador de usuario con \"recipient\"", async () => {
+    const bodies: Record<string, unknown>[] = [];
+    globalThis.fetch = (async (_url: string, init: { body: string }) => {
+      bodies.push(JSON.parse(init.body));
+      return new Response(JSON.stringify({ messages: [{ id: "wamid.x" }] }), { status: 200 });
+    }) as typeof fetch;
+    const client = createWhatsAppClient(CONFIG, new DeliveryTracker(), 50);
+    await client.sendAll(TO, [{ kind: "text", body: "a", previewUrl: false }]);
+    await client.sendAll("CO.1234567890", [{ kind: "text", body: "b", previewUrl: false }]);
+    assert.equal(bodies[0].to, TO);
+    assert.equal(bodies[0].recipient, undefined);
+    assert.equal(bodies[1].recipient, "CO.1234567890");
+    assert.equal(bodies[1].to, undefined);
+  });
+
   it("extrae los estados del webhook", () => {
     const payload = {
       entry: [
